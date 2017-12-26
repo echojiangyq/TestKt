@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt' //替换 annotationProcessor,Dagger/ButterKnife/dataBinding用到
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    
+    signingConfigs {
+        EchoTest {
+            keyAlias 'broadlink_echoj'
+            keyPassword 'broadlink_echoj'
+            storeFile file('D:/DeskTop/apk签名/broadlink_echoj')
+            storePassword 'broadlink_echoj'
+        }
+    }
+    
+    defaultConfig {
+        applicationId "echo.testkt"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.EchoTest
+    }
+
+
+    
+    dataBinding {
+        enabled true
+    }
+    
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildToolsVersion '26.0.2'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    def dependencies = rootProject.ext.dependencies
+    
+    implementation dependencies.supportAppCompat
+    implementation dependencies.supportRecyclerview
+    implementation dependencies.supportCardView
+
+    provided dependencies.javaxAnnotation
+    implementation dependencies.rxJava
+    implementation dependencies.rxAndroid
+    implementation dependencies.gson
+    implementation dependencies.retrofit
+    implementation dependencies.retrofitRxjavaAdapter
+    implementation dependencies.retrofitGsonConverter
+    implementation dependencies.okhttp3
+    implementation dependencies.okhttpLoggingInterceptor
+    implementation dependencies.glide
+    
+    implementation dependencies.dagger
+    kapt dependencies.daggerCompiler
+  
+    implementation dependencies.kotlinStdlib
+    implementation dependencies.kotlinReflect
+    implementation dependencies.kotlinJre
+    
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
